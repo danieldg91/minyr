@@ -1,4 +1,4 @@
-package yr
+/*package yr
 
 import (
 	"errors"
@@ -39,3 +39,4 @@ func CelsiusToFahrenheitLine(line string) (string, error) {
 
 	// return "Kjevik;SN39040;18.03.2022 01:50;42.8", err
 }
+*/
