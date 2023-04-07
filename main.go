@@ -2,12 +2,14 @@ package main
 
 import (
 	"bufio"
-	"encoding/csv"
+	// "encoding/csv"
 	"fmt"
+	"log"
 	"os"
-	"strconv"
 
-	"github.com/danieldg91/funtemps/conv"
+	// "strconv"
+	// "github.com/danieldg91/funtemps/conv"
+	"github.com/danieldg91/minyr/yr"
 )
 
 func main() {
@@ -15,21 +17,34 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println("")
 	fmt.Println("Running...")
-	fmt.Println("Enter 'q' or 'exit' to close the program")
-	fmt.Println("Enter 'convert' to convert the file to output.csv in fahrenheit values")
+	fmt.Println("")
+	fmt.Println("Enter 'q' or 'exit' to close the program, or")
+	fmt.Println("Enter 'convert' to run the program:")
 
 	for scanner.Scan() {
 		input := scanner.Text()
-		if input == "q" || input == "exit" {
 
+		switch input {
+		case "q", "exit":
 			os.Exit(0)
-		}
-		if input == "convert" {
-
-			// Open the CSV file
-			file, err := os.Open("kjevik-temp-celsius-20220318-20230318.csv")
+		case "convert":
+			err := yr.KonverterFil()
 			if err != nil {
-				fmt.Println("Error opening file:", err)
+				log.Fatal(err)
+			}
+			return
+		}
+	}
+}
+
+/*
+
+// MÅ FIKSE PÅ GJENNOMSNITTSKONVERTERING til C eller F + SKRIVE UT FØRSTE OG SISTE LINJE +
+			// Open the CSV file
+
+			inputfile, err := os.Open("kjevik-temp-celsius-20220318-20230318.csv")
+			if err != nil {
+				fmt.Println("Error opening inputfile:", err)
 				return
 			}
 			defer file.Close()
@@ -45,7 +60,7 @@ func main() {
 				return
 			}
 
-			outFile, err := os.Create("output.csv")
+			outFile, err := os.Create("output.csv")  // må gjøre det mulig for bruker å lage egen filnavn på output filen...
 			if err != nil {
 				fmt.Println("Error creating output file:", err)
 				return
@@ -102,5 +117,4 @@ func main() {
 			fmt.Println("The result of the conversion has been written to the file: 'output.csv'")
 		}
 	}
-
-}
+*/
