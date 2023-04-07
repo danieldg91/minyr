@@ -149,15 +149,15 @@ func KonverterFil() error {
 
 	reader = bufio.NewReader(inputFile)
 
+	// LESER LINJE FOR LINJE, TRIMMER MELLOMROMMENE, LINJENE DELES OPP ETTER ";" OG SER PÅ SISTE DEL FOR Å KONVERTERE TEMP TIL FAHR.
 	for {
-		line, err := reader.ReadString('\n') // lese fil linje for linje
+		line, err := reader.ReadString('\n')
 		if err != nil {
 			if err.Error() != "EOF" { // ignore EOF error
 				log.Fatal(err)
 			}
 			break
 		}
-
 		line = strings.TrimSpace(line)
 		parts := strings.Split(line, ";")
 		temperature, err := strconv.ParseFloat(parts[len(parts)-1], 64)
@@ -169,12 +169,12 @@ func KonverterFil() error {
 			temperature = conv.CelsiusToFahrenheit(temperature)
 		}
 
-		// Add temperature to the sum and increment count
+		// Legger sammen tallene for å regne ut gj.snitt.
 		sum += temperature
 		count++
 	}
 
-	// kalkulere/skrive ut
+	// kalkulere/skrive ut gjennomsnittstemp.
 	average := sum / float64(count)
 	if tempType == "C" {
 		fmt.Printf("The average temperature in Celsius is %.2f\n", average)
