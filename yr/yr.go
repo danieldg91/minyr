@@ -2,7 +2,6 @@ package yr
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"log"
 	"math"
@@ -14,7 +13,7 @@ import (
 )
 
 // -------------------------------------------------------------------- JANIS KODE UNDER DENNE LINJEN
-func CelsiusToFahrenheitString(celsius string) (string, error) {
+/* func CelsiusToFahrenheitString(celsius string) (string, error) {
 	var fahrFloat float64
 	var err error
 	if celsiusFloat, err := strconv.ParseFloat(celsius, 64); err == nil {
@@ -44,7 +43,7 @@ func CelsiusToFahrenheitLine(line string) (string, error) {
 
 	// return "Kjevik;SN39040;18.03.2022 01:50;42.8", err
 }
-
+*/
 // -------------------------------------------------------------------- JANIS' KODE OVER DENNE LINJEN
 
 // HOVEDFUNKSJON FOR MAIN

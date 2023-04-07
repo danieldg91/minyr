@@ -1,46 +1,89 @@
 package yr
 
 import (
+	"bufio"
+	"os"
 	"testing"
 )
 
-func TestCelsiusToFahrenheitString(t *testing.T) {
-	type test struct {
-		input string
-		want  string
-	}
-	tests := []test{
-		{input: "6", want: "42.8"},
-		{input: "0", want: "32.0"},
-	}
-
-	for _, tc := range tests {
-		got, _ := CelsiusToFahrenheitString(tc.input)
-		if !(tc.want == got) {
-			t.Errorf("expected %s, got: %s", tc.want, got)
-		}
-	}
+type tempConverterTest struct {
+	inputLine    string
+	expectedLine string
 }
 
-// Forutsetter at vi kjenner strukturen i filen og denne implementasjon
-// er kun for filer som inneholder linjer hvor det fjerde element
-// på linjen er verdien for temperatrmaaling i grader celsius
-func TestCelsiusToFahrenheitLine(t *testing.T) {
-	type test struct {
-		input string
-		want  string
+func TestTempConverter(t *testing.T) {
+	// Define input/output lines to test
+	tests := []tempConverterTest{
+		{
+			inputLine:    "Kjevik;SN39040;18.03.2022 01:50;6",
+			expectedLine: "Kjevik;SN39040;18.03.2022 01:50;42.8",
+		},
+		{
+			inputLine:    "Kjevik;SN39040;07.03.2023 18:20;0",
+			expectedLine: "Kjevik;SN39040;07.03.2023 18:20;32",
+		},
+		{
+			inputLine:    "Kjevik;SN39040;08.03.2023 02:20;-11",
+			expectedLine: "Kjevik;SN39040;08.03.2023 02:20;12.2",
+		},
 	}
-	tests := []test{
-		{input: "Kjevik;SN39040;18.03.2022 01:50;6", want: "Kjevik;SN39040;18.03.2022 01:50;42.8"},
-		//{input: "Kjevik;SN39040;18.03.2022 01:50", want: ""},
 
+	// Open input and output files
+	inputFile, err := os.Open("/Users/danieldahlegray/github.com/minyr/kjevik-temp-celsius-20220318-20230318.csv") // Må ha hele pathen til filen
+	if err != nil {
+		t.Fatalf("Failed to open input file: %s", err)
+	}
+	defer inputFile.Close()
+
+	outputFile, err := os.Open("/Users/danieldahlegray/github.com/minyr/Kjevik") // Må ha hele pathen til filen
+	if err != nil {
+		t.Fatalf("Failed to open output file: %s", err)
+	}
+	defer outputFile.Close()
+
+	// Read lines from input and output files
+	inputLines := make([]string, 0)
+	outputLines := make([]string, 0)
+
+	inputScanner := bufio.NewScanner(inputFile)
+	outputScanner := bufio.NewScanner(outputFile)
+
+	for inputScanner.Scan() {
+		inputLines = append(inputLines, inputScanner.Text())
 	}
 
-	for _, tc := range tests {
-		got, _ := CelsiusToFahrenheitLine(tc.input)
-		if !(tc.want == got) {
-			t.Errorf("expected %s, got: %s", tc.want, got)
+	for outputScanner.Scan() {
+		outputLines = append(outputLines, outputScanner.Text())
+	}
+
+	// Check that number of lines match
+	if len(inputLines) != len(outputLines) {
+		t.Fatalf("Number of lines do not match: input=%d, output=%d", len(inputLines), len(outputLines))
+	}
+
+	// Test each input/output pair
+	for _, test := range tests {
+		// Find the input line in input file
+		var inputIndex int
+		for i, line := range inputLines {
+			if line == test.inputLine {
+				inputIndex = i
+				break
+			}
+		}
+
+		// Find the expected output line in output file
+		var expectedIndex int
+		for i, line := range outputLines {
+			if line == test.expectedLine {
+				expectedIndex = i
+				break
+			}
+		}
+
+		// Check that the corresponding output line matches the expected output line
+		if outputLines[inputIndex] != outputLines[expectedIndex] {
+			t.Errorf("Unexpected output: input=%s, expected=%s, actual=%s", test.inputLine, test.expectedLine, outputLines[inputIndex])
 		}
 	}
-
 }
