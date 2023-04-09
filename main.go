@@ -15,8 +15,9 @@ func main() {
 	fmt.Println("")
 	fmt.Println("Running...")
 	fmt.Println("")
-	fmt.Println("Enter 'q' or 'exit' to close the program, or")
-	fmt.Println("Enter 'convert' to run the program:")
+	fmt.Println("Enter 'q' or 'exit' to close the program.")
+	fmt.Println("Enter 'convert' to run the program and convert the input file to Fahrenheit values.")
+	fmt.Println("Enter 'average' to see the average temperature in Celcius or Fahrenheit.")
 
 	for scanner.Scan() {
 		input := scanner.Text()
@@ -29,6 +30,13 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
+			os.Exit(0)
+		case "average":
+			err := yr.SeGjennomsnitt()
+			if err != nil {
+				log.Fatal(err)
+			}
+
 			return
 		}
 	}

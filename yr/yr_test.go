@@ -29,13 +29,13 @@ func TestTempConverter(t *testing.T) {
 	}
 
 	// Open input and output files
-	inputFile, err := os.Open("/Users/danieldahlegray/github.com/minyr/kjevik-temp-celsius-20220318-20230318.csv") // Må ha hele pathen til filen
+	inputFile, err := os.Open("/minyr/kjevik-temp-celsius-20220318-20230318.csv") // Må ha hele pathen til filen
 	if err != nil {
 		t.Fatalf("Failed to open input file: %s", err)
 	}
 	defer inputFile.Close()
 
-	outputFile, err := os.Open("/Users/danieldahlegray/github.com/minyr/Kjevik") // Må ha hele pathen til filen
+	outputFile, err := os.Open("/minyr/kjevikOutput") // Må ha hele pathen til filen
 	if err != nil {
 		t.Fatalf("Failed to open output file: %s", err)
 	}
